@@ -27,6 +27,9 @@ public class Admin {
     @Column(name = "surname")
     private String surname;
 
+    @Column(name = "username")
+    private String username;
+
     @Column(name = "email", unique = true)
     private String email;
 

@@ -1,7 +1,7 @@
 package com.lukasz.project.controller;
 
 import com.lukasz.project.entity.Offer;
-import com.lukasz.project.offer.OfferService;
+import com.lukasz.project.service.OfferService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

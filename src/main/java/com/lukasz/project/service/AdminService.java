@@ -21,6 +21,7 @@ public class AdminService {
             throw new RuntimeException("Admin with this email already exists");
         }
 
+        // TODO: 12/1/2023 role
         admin.setRole(Role.ADMIN);
 
         adminRepository.save(admin);

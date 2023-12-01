@@ -1,11 +1,10 @@
 package com.lukasz.project.controller;
 
-import com.lukasz.project.company.CompanyService;
+import com.lukasz.project.database.AdminRegisterRequest;
+import com.lukasz.project.database.RecruiterRegisterRequest;
 import com.lukasz.project.entity.Admin;
 import com.lukasz.project.entity.Company;
 import com.lukasz.project.entity.Recruiter;
-import com.lukasz.project.recruiter.RecruiterRegisterRequest;
-import com.lukasz.project.recruiter.RecruiterService;
 import com.lukasz.project.service.AdminService;
 import com.lukasz.project.service.CompanyService;
 import com.lukasz.project.service.RecruiterService;

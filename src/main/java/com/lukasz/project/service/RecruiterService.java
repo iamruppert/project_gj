@@ -22,6 +22,7 @@ public class RecruiterService {
 
         recruiter.setCreatedOffers(null);
 
+        // TODO: 12/1/2023 role
         recruiter.setRole(Role.RECRUITER);
 
         recruiterRepository.save(recruiter);
