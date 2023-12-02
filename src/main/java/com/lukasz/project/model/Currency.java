@@ -1,4 +1,4 @@
-package com.lukasz.project.entity;
+package com.lukasz.project.model;
 
 public enum Currency {
     USD,

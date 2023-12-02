@@ -1,6 +1,6 @@
 package com.lukasz.project.service;
 
-import com.lukasz.project.entity.Offer;
+import com.lukasz.project.model.Offer;
 import com.lukasz.project.repository.OfferRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

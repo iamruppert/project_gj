@@ -1,6 +1,6 @@
 package com.lukasz.project.repository;
 
-import com.lukasz.project.entity.User;
+import com.lukasz.project.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

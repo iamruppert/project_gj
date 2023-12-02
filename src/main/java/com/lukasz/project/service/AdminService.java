@@ -1,7 +1,7 @@
 package com.lukasz.project.service;
 
-import com.lukasz.project.entity.Admin;
-import com.lukasz.project.entity.Role;
+import com.lukasz.project.model.Admin;
+import com.lukasz.project.model.Role;
 import com.lukasz.project.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

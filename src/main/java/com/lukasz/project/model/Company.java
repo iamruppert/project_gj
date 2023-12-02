@@ -1,15 +1,17 @@
-package com.lukasz.project.entity;
+package com.lukasz.project.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.With;
 
 import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@With
 @Data
 @Entity
 @Table(name = "company")

@@ -1,4 +1,4 @@
-package com.lukasz.project.entity;
+package com.lukasz.project.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

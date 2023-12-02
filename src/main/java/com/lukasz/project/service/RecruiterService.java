@@ -1,7 +1,7 @@
 package com.lukasz.project.service;
 
-import com.lukasz.project.entity.Recruiter;
-import com.lukasz.project.entity.Role;
+import com.lukasz.project.model.Recruiter;
+import com.lukasz.project.model.Role;
 import com.lukasz.project.repository.RecruiterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,8 +22,6 @@ public class RecruiterService {
 
         recruiter.setCreatedOffers(null);
 
-        // TODO: 12/1/2023 role
-        recruiter.setRole(Role.RECRUITER);
 
         recruiterRepository.save(recruiter);
     }
