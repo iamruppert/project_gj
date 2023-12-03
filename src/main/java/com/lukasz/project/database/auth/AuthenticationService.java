@@ -4,10 +4,14 @@ import com.lukasz.project.database.config.JwtService;
 import com.lukasz.project.model.Admin;
 import com.lukasz.project.model.Recruiter;
 import com.lukasz.project.model.RegisteredUser;
+import com.lukasz.project.model.User;
 import com.lukasz.project.repository.AdminRepository;
 import com.lukasz.project.repository.RecruiterRepository;
 import com.lukasz.project.repository.RegisteredUserRepository;
 import com.lukasz.project.repository.UserRepository;
+import com.lukasz.project.token.Token;
+import com.lukasz.project.token.TokenRepository;
+import com.lukasz.project.token.TokenType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,14 +32,16 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final Extractor extractor;
     private final JwtService jwtService;
+    private final TokenRepository tokenRepository;
 
 
     public AuthenticationResponse register(RegisterRequest request) {
         try {
             RegisteredUser user = extractor.createActorFromRequest(request, RegisteredUser.class);
             user.setRole(REGISTERED_USER);
-            userRepository.save(user);
+            RegisteredUser save = userRepository.save(user);
             var jwtToken = jwtService.generateToken(user);
+            saveUserToken(save, jwtToken);
             return AuthenticationResponse.builder()
                     .token(jwtToken)
                     .build();
@@ -43,13 +49,14 @@ public class AuthenticationService {
             throw new RuntimeException("Error during registration", e);
         }
     }
+
     public AuthenticationResponse registerAdmin(RegisterRequest request) {
         try {
             Admin admin = extractor.createActorFromRequest(request, Admin.class);
             admin.setRole(ADMIN);
-            admin.setPassword(passwordEncoder.encode(request.getPassword()));
-            userRepository.save(admin);
+            Admin save = userRepository.save(admin);
             var jwtToken = jwtService.generateToken(admin);
+            saveUserToken(save, jwtToken);
             return AuthenticationResponse.builder()
                     .token(jwtToken)
                     .build();
@@ -57,19 +64,21 @@ public class AuthenticationService {
             throw new RuntimeException("Error during admin registration", e);
         }
     }
-    public String registerRecruiter(RegisterRequest request) {
+
+    public AuthenticationResponse registerRecruiter(RegisterRequest request) {
         try {
             Recruiter newRecruiter = extractor.createActorFromRequest(request, Recruiter.class);
             newRecruiter.setRole(RECRUITER);
-            newRecruiter.setPassword(passwordEncoder.encode(request.getPassword()));
-
-            recruiterRepository.save(newRecruiter);
-            return "Recruiter registered successfully";
+            Recruiter save = userRepository.save(newRecruiter);
+            var jwtToken = jwtService.generateToken(newRecruiter);
+            saveUserToken(save, jwtToken);
+            return AuthenticationResponse.builder()
+                    .token(jwtToken)
+                    .build();
         } catch (Exception e) {
             throw new RuntimeException("Error during recruiter registration", e);
         }
     }
-
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -80,9 +89,34 @@ public class AuthenticationService {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
+        revokeAllUsersTokens(user);
+        saveUserToken(user, jwtToken);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
     }
 
+    private void revokeAllUsersTokens(User user) {
+        var validUsersTokens = tokenRepository.findAllValidTokensByUser(user.getId());
+        if (validUsersTokens.isEmpty()) {
+            return;
+        }
+        validUsersTokens.forEach(t -> {
+            t.setExpired(true);
+            t.setRevoked(true);
+        });
+        tokenRepository.saveAll(validUsersTokens);
+    }
+
+
+    private void saveUserToken(User save, String jwtToken) {
+        var token = Token.builder()
+                .user(save)
+                .token(jwtToken)
+                .tokenType(TokenType.BEARER)
+                .expired(false)
+                .revoked(false)
+                .build();
+        tokenRepository.save(token);
+    }
 }

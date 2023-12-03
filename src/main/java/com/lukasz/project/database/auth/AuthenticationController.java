@@ -24,16 +24,10 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> registerAdmin(@RequestBody RegisterRequest registerRequest) {
         return ResponseEntity.ok(authenticationService.registerAdmin(registerRequest));
     }
-//    @PostMapping("/register-recruiter")
-//    public ResponseEntity<String> registerRecruiter(@RequestBody RegisterRequest registerRequest) {
-//        try {
-//            authenticationService.registerRecruiter(registerRequest);
-//
-//            return ResponseEntity.ok("Recruiter registered successfully");
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().body("Recruiter registration failed: " + e.getMessage());
-//        }
-//    }
+    @PostMapping("/register-recruiter")
+    public ResponseEntity<AuthenticationResponse> registerRecruiter(@RequestBody RegisterRequest registerRequest) {
+        return ResponseEntity.ok(authenticationService.registerRecruiter(registerRequest));
+    }
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
