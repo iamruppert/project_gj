@@ -20,4 +20,6 @@ public class RegisteredUser extends User {
             joinColumns = @JoinColumn(name = "registered_user_id"),
             inverseJoinColumns = @JoinColumn(name = "offer_id"))
     private Set<Offer> favoriteOffers;
+
+
 }

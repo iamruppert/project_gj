@@ -1,7 +1,6 @@
 package com.lukasz.project.database.auth;
 
 import com.lukasz.project.database.request.CompanyRequest;
-import com.lukasz.project.database.request.RegisterRequest;
 import com.lukasz.project.model.Admin;
 import com.lukasz.project.model.Company;
 import com.lukasz.project.model.Recruiter;

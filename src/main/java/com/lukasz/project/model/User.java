@@ -2,14 +2,17 @@ package com.lukasz.project.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.OffsetDateTime;
 import java.util.Collection;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,15 +24,15 @@ import java.util.Collection;
         name = "user_type",
         discriminatorType = DiscriminatorType.STRING
 )
-public abstract class User implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "identifier", unique = true)
-    private String identifier;
+//    @Column(name = "identifier", unique = true)
+//    private String identifier;
 
     @Column(name = "name")
     private String name;
@@ -59,16 +62,16 @@ public abstract class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @PrePersist
-    public void prePersist() {
-        if (identifier == null) {
-            identifier = generateRandomIdentifier();
-        }
-    }
+//    @PrePersist
+//    public void prePersist() {
+//        if (identifier == null) {
+//            identifier = generateRandomIdentifier();
+//        }
+//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return role.getAuthorities();
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override
@@ -101,22 +104,22 @@ public abstract class User implements UserDetails {
         return true;
     }
 
-    private String generateRandomIdentifier() {
-        String entityName;
-        String randomNumber;
-        if (role.toString().equals("REGISTERED_USER")) {
-            entityName = "REGISTERED_USER";
-            randomNumber = RandomStringUtils.randomNumeric(20);
-        } else if (role.toString().equals("ADMIN")) {
-            entityName = "ADMIN";
-            randomNumber = RandomStringUtils.randomNumeric(20);
-        } else {
-            entityName = "RECRUITER";
-            randomNumber = RandomStringUtils.randomNumeric(20);
-
-        }
-        return entityName + "_" + randomNumber;
-    }
+//    private String generateRandomIdentifier() {
+//        String entityName;
+//        String randomNumber;
+//        if (role.toString().equals("NORMAL_USER")) {
+//            entityName = "NORMAL_USER";
+//            randomNumber = RandomStringUtils.randomNumeric(20);
+//        } else if (role.toString().equals("ADMIN")) {
+//            entityName = "ADMIN";
+//            randomNumber = RandomStringUtils.randomNumeric(20);
+//        } else {
+//            entityName = "RECRUITER";
+//            randomNumber = RandomStringUtils.randomNumeric(20);
+//
+//        }
+//        return entityName + "_" + randomNumber;
+//    }
 
 
 }

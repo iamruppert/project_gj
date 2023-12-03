@@ -1,20 +1,14 @@
 package com.lukasz.project.controller;
 
 import com.lukasz.project.database.auth.Extractor;
-import com.lukasz.project.database.request.CompanyRequest;
-import com.lukasz.project.database.request.RegisterRequest;
 import com.lukasz.project.model.Admin;
-import com.lukasz.project.model.Company;
 import com.lukasz.project.model.Recruiter;
-import com.lukasz.project.model.Role;
 import com.lukasz.project.service.AdminService;
 import com.lukasz.project.service.CompanyService;
 import com.lukasz.project.service.RecruiterService;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
