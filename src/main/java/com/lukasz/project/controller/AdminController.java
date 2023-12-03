@@ -32,21 +32,6 @@ public class AdminController {
 
     private final Extractor extractor;
 
-
-    @PostMapping("/createRecruiter")
-    public ResponseEntity<String> createRecruiter(@Valid @RequestBody RegisterRequest request, BindingResult bindingResult) {
-        try {
-            Recruiter recruiter = extractor.createActorFromRequest(request, Recruiter.class);
-            recruiter.setRole(Role.RECRUITER);
-                recruiterService.createRecruiter(recruiter);
-                return ResponseEntity.status(HttpStatus.OK).body("Recruiter created successfully");
-
-        } catch (Exception e) {
-            e.printStackTrace(); // Log the exception for debugging
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create recruiter");
-        }
-    }
-
     @GetMapping("/findRecruiters")
     public ResponseEntity<List<Recruiter>> findRecruiters() {
         try {
@@ -57,21 +42,6 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-    @PostMapping("/createAdmin")
-    public ResponseEntity<String> createAdmin(@Valid @RequestBody RegisterRequest request, BindingResult bindingResult) {
-        try {
-
-            Admin admin = extractor.createActorFromRequest(request, Admin.class);
-            admin.setRole(Role.ADMIN);
-                adminService.createAdmin(admin);
-                return ResponseEntity.status(HttpStatus.OK).body("Admin created successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create admin");
-        }
-    }
-
 
     @GetMapping("/findAdmins")
     public ResponseEntity<List<Admin>> findAdmins() {
@@ -84,26 +54,6 @@ public class AdminController {
         }
     }
 
-    @PostMapping("/createCompany")
-    ResponseEntity<String> createCompany(@Valid @RequestBody CompanyRequest request, BindingResult bindingResult) {
-        try {
-            Company company = extractor.createCompanyFromRequest(request);
-            companyService.create(company);
-            return ResponseEntity.ok("Company created successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create company");
-        }
-    }
-
-//    @PostMapping("/deleteCompany")
-//    ResponseEntity<String> deleteCompany(@RequestBody Integer id) {
-//        try {
-//            companyService.delete(id);
-//            return ResponseEntity.ok("Company deleted successfully");
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete company");
-//        }
-//    }
 
 
 

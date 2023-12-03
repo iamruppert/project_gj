@@ -2,6 +2,7 @@ package com.lukasz.project.database.config;
 
 
 import com.lukasz.project.repository.RegisteredUserRepository;
+import com.lukasz.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,13 +20,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfiguration {
 
-    private final RegisteredUserRepository repository;
+    private final UserRepository userRepository;
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> (UserDetails) repository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return new CustomUserDetailsService(userRepository);
     }
+
 
     @Bean
     public AuthenticationProvider authenticationProvider() {

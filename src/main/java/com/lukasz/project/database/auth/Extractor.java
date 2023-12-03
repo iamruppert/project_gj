@@ -20,42 +20,39 @@ public class Extractor {
 
     public <T> T createActorFromRequest(RegisterRequest request, Class<T> type) {
         if (type.isAssignableFrom(Admin.class)) {
+            Admin admin = new Admin();
+            admin.setName(request.getName());
+            admin.setSurname(request.getSurname());
+            admin.setEmail(request.getEmail());
+            admin.setUsername(request.getUsername());
+            admin.setPesel(request.getPesel());
+            admin.setCountry(request.getCountry());
+            admin.setPassword(passwordEncoder.encode(request.getPassword()));
+            admin.setCreationDate(OffsetDateTime.now());
+            return type.cast(admin);
 
-            return type.cast(
-                    new Admin()
-                            .withName(request.getName())
-                            .withSurname(request.getSurname())
-                            .withEmail(request.getEmail())
-                            .withUsername(request.getUsername())
-                            .withPesel(request.getPesel())
-                            .withCountry(request.getCountry())
-                            .withPassword(passwordEncoder.encode(request.getPassword()))
-                            .withCreationDate(OffsetDateTime.now())
-            );
         } else if (type.isAssignableFrom(Recruiter.class)) {
-            return type.cast(
-                    new Recruiter()
-                            .withName(request.getName())
-                            .withSurname(request.getSurname())
-                            .withEmail(request.getEmail())
-                            .withUsername(request.getUsername())
-                            .withCountry(request.getCountry())
-                            .withPesel(request.getPesel())
-                            .withPassword(passwordEncoder.encode(request.getPassword()))
-                            .withCreationDate(OffsetDateTime.now())
-            );
+            Recruiter recruiter = new Recruiter();
+            recruiter.setName(request.getName());
+            recruiter.setSurname(request.getSurname());
+            recruiter.setEmail(request.getEmail());
+            recruiter.setUsername(request.getUsername());
+            recruiter.setPesel(request.getPesel());
+            recruiter.setCountry(request.getCountry());
+            recruiter.setPassword(passwordEncoder.encode(request.getPassword()));
+            recruiter.setCreationDate(OffsetDateTime.now());
+            return type.cast(recruiter);
         } else if (type.isAssignableFrom(RegisteredUser.class)) {
-            return type.cast(
-                    new RegisteredUser()
-                            .withName(request.getName())
-                            .withSurname(request.getSurname())
-                            .withEmail(request.getEmail())
-                            .withUsername(request.getUsername())
-                            .withCountry(request.getCountry())
-                            .withPesel(request.getPesel())
-                            .withPassword(passwordEncoder.encode(request.getPassword()))
-                            .withCreationDate(OffsetDateTime.now())
-            );
+            RegisteredUser registeredUser = new RegisteredUser();
+            registeredUser.setName(request.getName());
+            registeredUser.setSurname(request.getSurname());
+            registeredUser.setEmail(request.getEmail());
+            registeredUser.setUsername(request.getUsername());
+            registeredUser.setPesel(request.getPesel());
+            registeredUser.setCountry(request.getCountry());
+            registeredUser.setPassword(passwordEncoder.encode(request.getPassword()));
+            registeredUser.setCreationDate(OffsetDateTime.now());
+            return type.cast(registeredUser);
         } else {
             throw new IllegalArgumentException("Unsupported type: " + type.getSimpleName());
         }
