@@ -6,29 +6,29 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.With;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.OffsetDateTime;
-import java.util.Collection;
-import java.util.Set;
 
-@Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @With
+@Data
 @Table(name = "users")
-@Inheritance(strategy = InheritanceType.JOINED)
-public class User implements UserDetails {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(
+        name = "user_type",
+        discriminatorType = DiscriminatorType.STRING
+)
+public abstract class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Integer userId;
+    @Column(name = "id")
+    private Integer id;
 
-    @Column(name = "user_identfier")
-    private String userIdentifier;
+    @Column(name = "identifier", unique = true)
+    private String identifier;
 
     @Column(name = "name")
     private String name;
@@ -36,14 +36,14 @@ public class User implements UserDetails {
     @Column(name = "surname")
     private String surname;
 
-    @Column(name = "username")
-    private String username;
-
     @Column(name = "pesel")
     private String pesel;
 
     @Column(name = "country")
     private String country;
+
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "email", unique = true)
     private String email;
@@ -54,62 +54,31 @@ public class User implements UserDetails {
     @Column(name = "creation_date")
     private OffsetDateTime creationDate;
 
-    @ManyToMany
-    @JoinTable(
-            name = "favorite_offers",
-            joinColumns = @JoinColumn(name = "registered_user_id"),
-            inverseJoinColumns = @JoinColumn(name = "offer_id"))
-    private Set<Offer> favoriteOffers;
-
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return role.getAuthorities();
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
     @PrePersist
     public void prePersist() {
-        if (userIdentifier == null) {
-            userIdentifier = generateRandomIdentifier();
+        if (identifier == null) {
+            identifier = generateRandomIdentifier();
         }
     }
 
     private String generateRandomIdentifier() {
-        String entityName = "USER"; // Możesz dostosować nazwę encji
-        String randomNumber = RandomStringUtils.randomNumeric(20); // Losowe 5 cyfr
+        String entityName;
+        String randomNumber;
+        if (role.toString().equals("REGISTERED_USER")) {
+            entityName = "REGISTERED_USER";
+            randomNumber = RandomStringUtils.randomNumeric(20);
+        } else if (role.toString().equals("ADMIN")) {
+            entityName = "ADMIN";
+            randomNumber = RandomStringUtils.randomNumeric(20);
+        } else {
+            entityName = "RECRUITER";
+            randomNumber = RandomStringUtils.randomNumeric(20);
+
+        }
         return entityName + "_" + randomNumber;
     }
 }

@@ -1,11 +1,12 @@
 package com.lukasz.project.controller;
 
-import com.lukasz.project.database.request.CompanyRequest;
 import com.lukasz.project.database.auth.Extractor;
+import com.lukasz.project.database.request.CompanyRequest;
 import com.lukasz.project.database.request.RegisterRequest;
 import com.lukasz.project.model.Admin;
 import com.lukasz.project.model.Company;
 import com.lukasz.project.model.Recruiter;
+import com.lukasz.project.model.Role;
 import com.lukasz.project.service.AdminService;
 import com.lukasz.project.service.CompanyService;
 import com.lukasz.project.service.RecruiterService;
@@ -17,7 +18,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -35,21 +35,12 @@ public class AdminController {
 
     @PostMapping("/createRecruiter")
     public ResponseEntity<String> createRecruiter(@Valid @RequestBody RegisterRequest request, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            // If there are validation errors, construct an error message and return a bad request response
-            StringBuilder errorMessage = new StringBuilder("Invalid request. Please fix the following issues:\n");
-            bindingResult.getAllErrors().forEach(error -> errorMessage.append(error.getDefaultMessage()).append("\n"));
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage.toString());
-        }
         try {
-            Recruiter recruiter;
-            if (Objects.equals(request.getRole().toString(), "RECRUITER")) {
-                recruiter = extractor.createActorFromRequest(request, Recruiter.class);
+            Recruiter recruiter = extractor.createActorFromRequest(request, Recruiter.class);
+            recruiter.setRole(Role.RECRUITER);
                 recruiterService.createRecruiter(recruiter);
                 return ResponseEntity.status(HttpStatus.OK).body("Recruiter created successfully");
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Creating recruiter failed");
-            }
+
         } catch (Exception e) {
             e.printStackTrace(); // Log the exception for debugging
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create recruiter");
@@ -70,21 +61,12 @@ public class AdminController {
 
     @PostMapping("/createAdmin")
     public ResponseEntity<String> createAdmin(@Valid @RequestBody RegisterRequest request, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            // If there are validation errors, construct an error message and return a bad request response
-            StringBuilder errorMessage = new StringBuilder("Invalid request. Please fix the following issues:\n");
-            bindingResult.getAllErrors().forEach(error -> errorMessage.append(error.getDefaultMessage()).append("\n"));
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage.toString());
-        }
         try {
-            Admin admin;
-            if (Objects.equals(request.getRole().toString(), "ADMIN")) {
-                admin = extractor.createActorFromRequest(request, Admin.class);
+
+            Admin admin = extractor.createActorFromRequest(request, Admin.class);
+            admin.setRole(Role.ADMIN);
                 adminService.createAdmin(admin);
                 return ResponseEntity.status(HttpStatus.OK).body("Admin created successfully");
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Creating admin failed");
-            }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create admin");
         }
@@ -104,12 +86,6 @@ public class AdminController {
 
     @PostMapping("/createCompany")
     ResponseEntity<String> createCompany(@Valid @RequestBody CompanyRequest request, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            // If there are validation errors, construct an error message and return a bad request response
-            StringBuilder errorMessage = new StringBuilder("Invalid request. Please fix the following issues:\n");
-            bindingResult.getAllErrors().forEach(error -> errorMessage.append(error.getDefaultMessage()).append("\n"));
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage.toString());
-        }
         try {
             Company company = extractor.createCompanyFromRequest(request);
             companyService.create(company);

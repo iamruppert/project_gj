@@ -1,67 +1,83 @@
 package com.lukasz.project.model;
 
-import jakarta.persistence.*;
-import lombok.*;
-import org.apache.commons.lang3.RandomStringUtils;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.OffsetDateTime;
 
-@Getter
-@Setter
-@With
-@EqualsAndHashCode(callSuper = false)
-@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @Entity
-@Table(name = "admin")
-public class Admin {
+@Data
+@DiscriminatorValue(value = "admin")
+public class Admin extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "admin_id")
-    private Integer adminId;
-
-    @Column(name = "admin_identifier")
-    private String adminIdentifier;
-
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "surname")
-    private String surname;
-
-    @Column(name = "pesel")
-    private String pesel;
-
-    @Column(name = "country")
-    private String country;
-
-    @Column(name = "username")
-    private String username;
-
-    @Column(name = "email", unique = true)
-    private String email;
-
-    @Column(name = "password")
-    private String password;
-
-    @Column(name = "creation_date")
-    private OffsetDateTime creationDate;
-
-    @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
-    @PrePersist
-    public void prePersist() {
-        if (adminIdentifier == null) {
-            adminIdentifier = generateRandomIdentifier();
-        }
+    @Override
+    public Admin withId(Integer id) {
+        setId(id);
+        return this;
     }
 
-    private String generateRandomIdentifier() {
-        String entityName = "ADMIN"; // Możesz dostosować nazwę encji
-        String randomNumber = RandomStringUtils.randomNumeric(20); // Losowe 5 cyfr
-        return entityName + "_" + randomNumber;
+    @Override
+    public Admin withIdentifier(String identifier) {
+        setIdentifier(identifier);
+        return this;
+    }
+
+    @Override
+    public Admin withName(String name) {
+        setName(name);
+        return this;
+    }
+
+    @Override
+    public Admin withSurname(String surname) {
+        setSurname(surname);
+        return this;
+    }
+
+    @Override
+    public Admin withPesel(String pesel) {
+        setPesel(pesel);
+        return this;
+    }
+
+    @Override
+    public Admin withCountry(String country) {
+        setCountry(country);
+        return this;
+    }
+
+    @Override
+    public Admin withUsername(String username) {
+        setUsername(username);
+        return this;
+    }
+
+    @Override
+    public Admin withEmail(String email) {
+        setEmail(email);
+        return this;
+    }
+
+    @Override
+    public Admin withPassword(String password) {
+        setPassword(password);
+        return this;
+    }
+
+    @Override
+    public Admin withCreationDate(OffsetDateTime creationDate) {
+        setCreationDate(creationDate);
+        return this;
+    }
+
+    @Override
+    public Admin withRole(Role role) {
+        setRole(role);
+        return this;
     }
 }

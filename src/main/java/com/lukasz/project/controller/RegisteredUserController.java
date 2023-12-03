@@ -1,11 +1,10 @@
 package com.lukasz.project.controller;
 
 import com.lukasz.project.model.Offer;
-import com.lukasz.project.model.User;
+import com.lukasz.project.model.RegisteredUser;
 import com.lukasz.project.service.OfferService;
-import com.lukasz.project.service.UserService;
+import com.lukasz.project.service.RegisteredUserService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/registeredUser")
 @AllArgsConstructor
-public class UserController {
+public class RegisteredUserController {
 
     private final OfferService offerService;
-    private final UserService userService;
+    private final RegisteredUserService userService;
 
     @PostMapping("/addToFavourite")
     public ResponseEntity<String> addOfferToFavourite(
@@ -30,7 +29,7 @@ public class UserController {
         try {
             if (userDetails != null) {
                 // Fetch the logged-in user
-                User user = userService.findUserByEmail(userDetails.getUsername());
+                RegisteredUser user = userService.findUserByEmail(userDetails.getUsername());
 
                 // Add the offer to the user's favorite offers
                 user.getFavoriteOffers().add(offer);

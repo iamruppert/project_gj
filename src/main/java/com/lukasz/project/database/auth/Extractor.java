@@ -5,7 +5,7 @@ import com.lukasz.project.database.request.RegisterRequest;
 import com.lukasz.project.model.Admin;
 import com.lukasz.project.model.Company;
 import com.lukasz.project.model.Recruiter;
-import com.lukasz.project.model.User;
+import com.lukasz.project.model.RegisteredUser;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -20,6 +20,7 @@ public class Extractor {
 
     public <T> T createActorFromRequest(RegisterRequest request, Class<T> type) {
         if (type.isAssignableFrom(Admin.class)) {
+
             return type.cast(
                     new Admin()
                             .withName(request.getName())
@@ -30,7 +31,6 @@ public class Extractor {
                             .withCountry(request.getCountry())
                             .withPassword(passwordEncoder.encode(request.getPassword()))
                             .withCreationDate(OffsetDateTime.now())
-                            .withRole(request.getRole())
             );
         } else if (type.isAssignableFrom(Recruiter.class)) {
             return type.cast(
@@ -43,12 +43,10 @@ public class Extractor {
                             .withPesel(request.getPesel())
                             .withPassword(passwordEncoder.encode(request.getPassword()))
                             .withCreationDate(OffsetDateTime.now())
-                            .withRole(request.getRole())
             );
-        }
-        else if (type.isAssignableFrom(User.class)) {
+        } else if (type.isAssignableFrom(RegisteredUser.class)) {
             return type.cast(
-                    new User()
+                    new RegisteredUser()
                             .withName(request.getName())
                             .withSurname(request.getSurname())
                             .withEmail(request.getEmail())
@@ -57,7 +55,6 @@ public class Extractor {
                             .withPesel(request.getPesel())
                             .withPassword(passwordEncoder.encode(request.getPassword()))
                             .withCreationDate(OffsetDateTime.now())
-                            .withRole(request.getRole())
             );
         } else {
             throw new IllegalArgumentException("Unsupported type: " + type.getSimpleName());

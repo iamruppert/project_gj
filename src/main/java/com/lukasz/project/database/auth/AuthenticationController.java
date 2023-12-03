@@ -2,6 +2,7 @@ package com.lukasz.project.database.auth;
 
 
 import com.lukasz.project.database.request.RegisterRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(
-            @RequestBody RegisterRequest request
+            @Valid @RequestBody RegisterRequest request
     )
     {
         String result = service.register(request);

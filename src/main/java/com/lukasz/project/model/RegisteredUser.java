@@ -12,81 +12,79 @@ import java.util.Set;
 @Entity
 @With
 @Data
-@DiscriminatorValue(value = "recruiter")
-public class Recruiter extends User {
+@DiscriminatorValue(value = "registered_user")
+public class RegisteredUser extends User {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id")
-    private Company company;
-
-    @OneToMany(mappedBy = "recruiter", fetch = FetchType.EAGER)
-    private Set<Offer> createdOffers;
+    @ManyToMany
+    @JoinTable(
+            name = "favorite_offers",
+            joinColumns = @JoinColumn(name = "registered_user_id"),
+            inverseJoinColumns = @JoinColumn(name = "offer_id"))
+    private Set<Offer> favoriteOffers;
 
     @Override
-    public Recruiter withId(Integer id) {
+    public RegisteredUser withId(Integer id) {
         setId(id);
         return this;
     }
 
     @Override
-    public Recruiter withIdentifier(String identifier) {
+    public RegisteredUser withIdentifier(String identifier) {
         setIdentifier(identifier);
         return this;
     }
 
     @Override
-    public Recruiter withName(String name) {
+    public RegisteredUser withName(String name) {
         setName(name);
         return this;
     }
 
     @Override
-    public Recruiter withSurname(String surname) {
+    public RegisteredUser withSurname(String surname) {
         setSurname(surname);
         return this;
     }
 
     @Override
-    public Recruiter withPesel(String pesel) {
+    public RegisteredUser withPesel(String pesel) {
         setPesel(pesel);
         return this;
     }
 
     @Override
-    public Recruiter withCountry(String country) {
+    public RegisteredUser withCountry(String country) {
         setCountry(country);
         return this;
     }
 
     @Override
-    public Recruiter withUsername(String username) {
+    public RegisteredUser withUsername(String username) {
         setUsername(username);
         return this;
     }
 
     @Override
-    public Recruiter withEmail(String email) {
+    public RegisteredUser withEmail(String email) {
         setEmail(email);
         return this;
     }
 
     @Override
-    public Recruiter withPassword(String password) {
+    public RegisteredUser withPassword(String password) {
         setPassword(password);
         return this;
     }
 
     @Override
-    public Recruiter withCreationDate(OffsetDateTime creationDate) {
+    public RegisteredUser withCreationDate(OffsetDateTime creationDate) {
         setCreationDate(creationDate);
         return this;
     }
 
     @Override
-    public Recruiter withRole(Role role) {
+    public RegisteredUser withRole(Role role) {
         setRole(role);
         return this;
     }
-
-
 }

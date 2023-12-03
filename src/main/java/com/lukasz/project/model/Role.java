@@ -22,9 +22,9 @@ public enum Role {
 
             Set.of(RECRUITER_CREATE, RECRUITER_READ, RECRUITER_UPDATE, RECRUITER_DELETE)
     ),
-    USER(
+    REGISTERED_USER(
 
-            Set.of(USER_CREATE, USER_READ, USER_UPDATE, USER_DELETE)
+            Set.of(REGISTERED_USER_CREATE, REGISTERED_USER_READ, REGISTERED_USER_UPDATE, REGISTERED_USER_DELETE)
     );
 
     private final Set<Permission> permissions;

@@ -17,10 +17,10 @@ public enum Permission {
     RECRUITER_CREATE("recruiter:create"),
     RECRUITER_DELETE("recruiter:delete"),
 
-    USER_READ("user:read"),
-    USER_UPDATE("user:update"),
-    USER_CREATE("user:create"),
-    USER_DELETE("user:delete"),
+    REGISTERED_USER_READ("user:read"),
+    REGISTERED_USER_UPDATE("user:update"),
+    REGISTERED_USER_CREATE("user:create"),
+    REGISTERED_USER_DELETE("user:delete"),
 
 
     ;

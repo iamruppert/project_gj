@@ -2,6 +2,7 @@ package com.lukasz.project.controller;
 
 import com.lukasz.project.model.Offer;
 import com.lukasz.project.service.OfferService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class RecruiterController {
     private final OfferService offerService;
 
     @PostMapping("/addOffer")
-    public ResponseEntity<String> createOffer(@RequestBody Offer offer){
+    public ResponseEntity<String> createOffer(@Valid @RequestBody Offer offer) {
         try{
             offerService.createOffer(offer);
             return ResponseEntity.status(HttpStatus.CREATED).body("Offer created successfully");
@@ -28,7 +29,7 @@ public class RecruiterController {
         }
     }
     @PostMapping("/deleteOffer")
-    public ResponseEntity<String> deleteOffer(@RequestBody Offer offer){
+    public ResponseEntity<String> deleteOffer(@Valid @RequestBody Offer offer) {
         try{
             offerService.deleteOffer(offer);
             return ResponseEntity.status(HttpStatus.CREATED).body("Offer removed successfully");
