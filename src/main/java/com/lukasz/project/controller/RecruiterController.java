@@ -38,7 +38,7 @@ public class RecruiterController {
     @PostMapping("/updateOffer/{id}")
     public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody OfferRequest offerRequest) {
         try {
-//            offerService.updateOffer(id, offerRequest);
+            offerService.updateOffer(id, offerRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body("Offer removed successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to remove offer");

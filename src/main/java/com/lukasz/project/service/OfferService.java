@@ -29,4 +29,28 @@ public class OfferService {
     public void deleteOffer(Integer id){
         offerRepository.deleteById(id);
     }
+
+    public void updateOffer(Integer id, OfferRequest offerRequest) {
+        Optional<Offer> offerToUpdate = offerRepository.findById(id);
+        if(offerToUpdate.isPresent())
+        {
+            Offer offer = offerToUpdate.get();
+            if(offerRequest.getName()!=null){
+                offer.setName(offerRequest.getName());
+            }
+            if(offerRequest.getPosition()!=null){
+                offer.setPosition(offerRequest.getPosition());
+            }
+            if(offerRequest.getKeywords()!=null){
+                offer.setKeywords(offerRequest.getKeywords());
+            }
+            if(offerRequest.getSalary()!=null){
+                offer.setSalary(new BigDecimal(offerRequest.getSalary()));
+            }
+            if(offerRequest.getCurrency()!=null){
+                offer.setCurrency(offerRequest.getCurrency());
+            }
+            offerRepository.save(offer);
+        }
+    }
 }
