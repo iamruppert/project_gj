@@ -16,7 +16,9 @@ public enum Role {
 
     ADMIN(
 
-            Set.of(ADMIN_CREATE, ADMIN_READ, ADMIN_UPDATE, ADMIN_DELETE)
+            Set.of(
+                    ADMIN_CREATE, ADMIN_READ, ADMIN_UPDATE, ADMIN_DELETE
+                    )
     ),
     RECRUITER(
 

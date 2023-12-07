@@ -1,14 +1,18 @@
 package com.lukasz.project.controller;
 
 import com.lukasz.project.database.auth.Extractor;
+import com.lukasz.project.database.request.CompanyRequest;
 import com.lukasz.project.model.Admin;
+import com.lukasz.project.model.Company;
 import com.lukasz.project.model.Recruiter;
 import com.lukasz.project.service.AdminService;
 import com.lukasz.project.service.CompanyService;
 import com.lukasz.project.service.RecruiterService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,6 +51,19 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping("/createCompany")
+    public ResponseEntity<String> createCompany(@Valid @RequestBody CompanyRequest companyRequest){
+
+        try{
+            companyService.create(companyRequest);
+            return ResponseEntity.ok("Company created successfully");
+        }
+        catch(Exception e ){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 
 

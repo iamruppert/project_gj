@@ -51,6 +51,4 @@ public class RegisterRequest {
     @NotEmpty(message = "password should not be empty")
     private String password;
 
-//    @NotNull(message = "Role is required")
-//    private Role role;
 }
