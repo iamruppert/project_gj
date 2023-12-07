@@ -12,6 +12,7 @@ import org.hibernate.sql.model.internal.OptionalTableUpdate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -52,5 +53,9 @@ public class OfferService {
             }
             offerRepository.save(offer);
         }
+    }
+
+    public List<Offer> getAllOffers() {
+        return offerRepository.findAll();
     }
 }

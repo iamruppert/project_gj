@@ -1,5 +1,6 @@
 package com.lukasz.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,10 +15,10 @@ import java.util.Set;
 @DiscriminatorValue(value = "recruiter")
 public class Recruiter extends User {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @OneToMany(mappedBy = "recruiter", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "recruiter", fetch = FetchType.EAGER)
     private Set<Offer> createdOffers;
 }
