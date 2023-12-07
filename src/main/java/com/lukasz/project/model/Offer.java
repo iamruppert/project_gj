@@ -1,9 +1,7 @@
 package com.lukasz.project.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -13,6 +11,7 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "offer")
+@With
 public class Offer {
 
     @Id
@@ -20,7 +19,7 @@ public class Offer {
     @Column(name = "offer_id")
     private long offerId;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     @Column(name = "position")
@@ -34,7 +33,7 @@ public class Offer {
     private BigDecimal salary;
 
     @Column(name = "currency")
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private Currency currency;
 
     @ManyToOne(fetch = FetchType.LAZY)

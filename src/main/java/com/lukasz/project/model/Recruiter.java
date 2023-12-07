@@ -6,7 +6,7 @@ import lombok.*;
 import java.time.OffsetDateTime;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -18,6 +18,6 @@ public class Recruiter extends User {
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @OneToMany(mappedBy = "recruiter", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "recruiter", fetch = FetchType.LAZY)
     private Set<Offer> createdOffers;
 }

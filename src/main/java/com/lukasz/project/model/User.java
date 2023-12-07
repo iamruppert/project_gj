@@ -1,11 +1,11 @@
 package com.lukasz.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lukasz.project.token.Token;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,13 +18,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(
         name = "user_type",
         discriminatorType = DiscriminatorType.STRING
 )
+@JsonIgnoreProperties({"password", "tokens","authorities","accountNonLocked","credentialsNonExpired","accountNonExpired"})
 public class User implements UserDetails {
 
     @Id
@@ -65,13 +68,6 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
-
-//    @PrePersist
-//    public void prePersist() {
-//        if (identifier == null) {
-//            identifier = generateRandomIdentifier();
-//        }
-//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

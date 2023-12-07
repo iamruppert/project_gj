@@ -1,5 +1,6 @@
 package com.lukasz.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,6 +30,7 @@ public enum Role {
             Set.of(REGISTERED_USER_CREATE, REGISTERED_USER_READ, REGISTERED_USER_UPDATE, REGISTERED_USER_DELETE)
     );
 
+    @JsonIgnore
     private final Set<Permission> permissions;
 
     public List<SimpleGrantedAuthority> getAuthorities() {
