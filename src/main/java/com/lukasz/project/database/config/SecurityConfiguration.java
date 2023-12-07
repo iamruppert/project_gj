@@ -41,26 +41,18 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests()
-                .requestMatchers("/api/auth/register")
-                    .permitAll()
-                .requestMatchers("api/auth/authenticate")
-                    .permitAll()
-
-                .requestMatchers("api/auth/register-admin").hasRole(ADMIN.name())
-                .requestMatchers("api/auth/register-recruiter").hasRole(ADMIN.name())
-
-                .requestMatchers("api/recruiter/**").hasAnyRole(ADMIN.name(), RECRUITER.name())
-
-                .requestMatchers(POST,"api/recruiter/**").hasAnyAuthority(ADMIN_CREATE.name(), RECRUITER_CREATE.name())
-
-                .requestMatchers("api/admin/**").hasRole(ADMIN.name())
-                .requestMatchers(GET,"api/admin/**").hasAuthority(ADMIN_READ.name())
-                .requestMatchers(POST,"api/admin/createCompany").hasAnyAuthority(ADMIN_CREATE.name())
-
-                .anyRequest()
-                .authenticated()
-                .and()
+                .authorizeHttpRequests(req ->
+                        req.requestMatchers("api/auth/register")
+                                .permitAll()
+                                .requestMatchers("api/auth/authenticate")
+                                .permitAll()
+                                .requestMatchers("api/auth/register-admin").hasRole(ADMIN.name())
+                                .requestMatchers("api/auth/register-recruiter").hasRole(ADMIN.name())
+                                .requestMatchers("api/recruiter/**").hasAnyRole(ADMIN.name(), RECRUITER.name())
+                                .requestMatchers("api/admin/**").hasRole(ADMIN.name())
+                                .anyRequest()
+                                .authenticated()
+                )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

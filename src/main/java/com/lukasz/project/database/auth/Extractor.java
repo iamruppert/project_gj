@@ -1,14 +1,13 @@
 package com.lukasz.project.database.auth;
 
 import com.lukasz.project.database.request.CompanyRequest;
-import com.lukasz.project.model.Admin;
-import com.lukasz.project.model.Company;
-import com.lukasz.project.model.Recruiter;
-import com.lukasz.project.model.RegisteredUser;
+import com.lukasz.project.database.request.OfferRequest;
+import com.lukasz.project.model.*;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
 @AllArgsConstructor
@@ -61,6 +60,15 @@ public class Extractor {
                 .withName(request.getName())
                 .withAddress(request.getAddress())
                 .withWebsite(request.getWebsite());
+    }
+
+    public Offer createOfferFromRequest(OfferRequest offerRequest) {
+        return new Offer()
+                .withName(offerRequest.getName())
+                .withPosition(offerRequest.getPosition())
+                .withKeywords(offerRequest.getKeywords())
+                .withCurrency(offerRequest.getCurrency())
+                .withSalary(new BigDecimal(offerRequest.getSalary()));
     }
 
 }

@@ -27,7 +27,7 @@ public class RecruiterService {
     }
 
     public List<Recruiter> findAllRecruiter(){
-        return recruiterRepository.findAll();
+        return recruiterRepository.findAllRecruiters();
     }
 
 }
