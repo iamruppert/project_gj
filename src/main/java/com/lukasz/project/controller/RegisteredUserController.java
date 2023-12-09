@@ -2,8 +2,8 @@ package com.lukasz.project.controller;
 
 import com.lukasz.project.model.Offer;
 import com.lukasz.project.model.RegisteredUser;
-import com.lukasz.project.service.OfferService;
-import com.lukasz.project.service.RegisteredUserService;
+import com.lukasz.project.service.OfferServiceImpl;
+import com.lukasz.project.service.RegisteredUserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,14 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class RegisteredUserController {
 
-    private final OfferService offerService;
-    private final RegisteredUserService userService;
+    private final OfferServiceImpl offerService;
+    private final RegisteredUserServiceImpl userService;
 
     @PostMapping("/addToFavourite")
     public ResponseEntity<String> addOfferToFavourite(
             @RequestBody Offer offer,
             @AuthenticationPrincipal UserDetails userDetails) {
-
         try {
             if (userDetails != null) {
                 // Fetch the logged-in user

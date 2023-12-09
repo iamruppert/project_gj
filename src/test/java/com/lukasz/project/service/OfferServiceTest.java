@@ -46,7 +46,7 @@ public class OfferServiceTest {
 
 
     @Autowired
-    private OfferService offerService;
+    private OfferServiceImpl offerService;
 
     @Test
     @DirtiesContext
