@@ -2,7 +2,7 @@ package com.lukasz.project.controller;
 
 import com.lukasz.project.database.auth.AuthenticationService;
 import com.lukasz.project.database.auth.RegisterRequest;
-import com.lukasz.project.database.request.CompanyRequest;
+import com.lukasz.project.dto.CompanyRequest;
 import com.lukasz.project.model.Admin;
 import com.lukasz.project.model.Recruiter;
 import com.lukasz.project.service.AdminServiceImpl;
@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -44,13 +43,13 @@ public class AdminController {
     }
 
     @PostMapping("/createCompany")
-    public ResponseEntity<String> createCompany(@Valid @RequestBody CompanyRequest companyRequest) {
+    public ResponseEntity<String> createCompany(@RequestBody @Valid CompanyRequest companyRequest) {
         companyService.create(companyRequest);
         return ResponseEntity.ok("Company created successfully");
     }
 
     @PostMapping("/createRecruiter")
-    public ResponseEntity<String> createRecruiter(@Valid @RequestBody RegisterRequest recruiterRequest) {
+    public ResponseEntity<String> createRecruiter(@RequestBody @Valid RegisterRequest recruiterRequest) {
         authenticationService.registerRecruiter(recruiterRequest);
         return ResponseEntity.ok("Recruiter created successfully");
     }

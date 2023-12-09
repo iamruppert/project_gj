@@ -1,6 +1,6 @@
 package com.lukasz.project.service;
 
-import com.lukasz.project.database.request.CompanyRequest;
+import com.lukasz.project.dto.CompanyRequest;
 
 public interface CompanyService {
 

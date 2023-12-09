@@ -1,18 +1,22 @@
 package com.lukasz.project.service;
 
 import com.lukasz.project.database.auth.Extractor;
-import com.lukasz.project.database.request.OfferRequest;
+import com.lukasz.project.dto.OfferRequest;
 import com.lukasz.project.model.Offer;
 import com.lukasz.project.model.Recruiter;
 import com.lukasz.project.model.User;
 import com.lukasz.project.repository.OfferRepository;
 import com.lukasz.project.repository.UserRepository;
+import com.lukasz.project.validator.MyValidationException;
+import com.lukasz.project.validator.ObjectValidatorImpl;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -20,57 +24,54 @@ public class OfferServiceImpl implements OfferService {
     private final OfferRepository offerRepository;
     private final UserRepository userRepository;
     private final Extractor extractor;
+    private final ObjectValidatorImpl<OfferRequest> validator;
 
     @Override
     public void createOffer(OfferRequest offerRequest) {
-        try {
-            Offer offer = extractor.createOfferFromRequest(offerRequest);
-            Optional<User> byEmail = userRepository.findByEmail(offerRequest.getEmail());
-            byEmail.ifPresent(user -> offer.setRecruiter((Recruiter) user));
-            offerRepository.save(offer);
-        } catch (Exception e) {
-            throw new RuntimeException("Error during creating offer", e);
+        Set<String> violations = validator.validate(offerRequest);
+        if (!violations.isEmpty()) {
+            throw new MyValidationException(violations);
         }
 
+        Offer offer = extractor.createOfferFromRequest(offerRequest);
+        User user = userRepository
+                .findByEmail(offerRequest.getEmail())
+                .orElseThrow(() -> new RuntimeException(String.format("User with email: [%s] not found", offerRequest.getEmail())));
+        offer.setRecruiter((Recruiter) user);
+        offerRepository.save(offer);
     }
+
 
     @Override
     public void deleteOffer(Integer id) {
-        try {
-            offerRepository.deleteById(id);
-        } catch (Exception e) {
-            throw new RuntimeException("Error during deleting offer", e);
+
+        if(offerRepository.findById(id).isEmpty()){
+            throw new RuntimeException(String.format("Offer with id: {%s} does not exist",id));
         }
+        offerRepository.deleteById(id);
     }
 
     @Override
     public void updateOffer(Integer id, OfferRequest offerRequest) {
-        try {
+
+            Set<String> violations = validator.validate(offerRequest);
+            if (!violations.isEmpty()) {
+                throw new MyValidationException(violations);
+            }
+
             Optional<Offer> offerToUpdate = offerRepository.findById(id);
             if (offerToUpdate.isPresent()) {
                 Offer offer = offerToUpdate.get();
-                if (offerRequest.getName() != null) {
-                    offer.setName(offerRequest.getName());
-                }
-                if (offerRequest.getPosition() != null) {
-                    offer.setPosition(offerRequest.getPosition());
-                }
-                if (offerRequest.getKeywords() != null) {
-                    offer.setKeywords(offerRequest.getKeywords());
-                }
-                if (offerRequest.getSalary() != null) {
-                    offer.setSalary(new BigDecimal(offerRequest.getSalary()));
-                }
-                if (offerRequest.getCurrency() != null) {
-                    offer.setCurrency(offerRequest.getCurrency());
-                }
+
+                offer.setName(offerRequest.getName());
+                offer.setPosition(offerRequest.getPosition());
+                offer.setKeywords(offerRequest.getKeywords());
+                offer.setSalary(new BigDecimal(offerRequest.getSalary()));
+                offer.setCurrency(offerRequest.getCurrency());
+
                 offerRepository.save(offer);
             }
-        } catch (Exception e) {
-            throw new RuntimeException("Error during updating offer", e);
         }
-
-    }
 
     @Override
     public List<Offer> getAllOffers() {

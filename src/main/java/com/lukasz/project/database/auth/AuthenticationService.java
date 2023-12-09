@@ -12,11 +12,16 @@ import com.lukasz.project.repository.UserRepository;
 import com.lukasz.project.token.Token;
 import com.lukasz.project.token.TokenRepository;
 import com.lukasz.project.token.TokenType;
+import com.lukasz.project.validator.MyValidationException;
+import com.lukasz.project.validator.ObjectValidatorImpl;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 import static com.lukasz.project.model.Role.*;
 
@@ -33,6 +38,7 @@ public class AuthenticationService {
     private final Extractor extractor;
     private final JwtService jwtService;
     private final TokenRepository tokenRepository;
+    private final ObjectValidatorImpl<RegisterRequest> validator;
 
 
     public AuthenticationResponse register(RegisterRequest request) {
@@ -66,7 +72,11 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse registerRecruiter(RegisterRequest request) {
-        try {
+        Set<String> violations = validator.validate(request);
+            if (!violations.isEmpty()) {
+                throw new MyValidationException(violations);
+            }
+
             Recruiter newRecruiter = extractor.createActorFromRequest(request, Recruiter.class);
             newRecruiter.setRole(RECRUITER);
             Recruiter save = userRepository.save(newRecruiter);
@@ -75,9 +85,6 @@ public class AuthenticationService {
             return AuthenticationResponse.builder()
                     .token(jwtToken)
                     .build();
-        } catch (Exception e) {
-            throw new RuntimeException("Error during recruiter registration", e);
-        }
     }
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(

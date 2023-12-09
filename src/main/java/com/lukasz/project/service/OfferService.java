@@ -1,6 +1,6 @@
 package com.lukasz.project.service;
 
-import com.lukasz.project.database.request.OfferRequest;
+import com.lukasz.project.dto.OfferRequest;
 import com.lukasz.project.model.Offer;
 
 import java.util.List;

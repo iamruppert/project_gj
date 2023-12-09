@@ -21,8 +21,7 @@ import org.springframework.web.filter.CorsFilter;
 import java.util.Arrays;
 
 import static com.lukasz.project.model.Permission.*;
-import static com.lukasz.project.model.Role.ADMIN;
-import static com.lukasz.project.model.Role.RECRUITER;
+import static com.lukasz.project.model.Role.*;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
@@ -50,6 +49,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("api/auth/register-recruiter").hasRole(ADMIN.name())
                                 .requestMatchers("api/recruiter/**").hasAnyRole(ADMIN.name(), RECRUITER.name())
                                 .requestMatchers("api/admin/**").hasRole(ADMIN.name())
+                                .requestMatchers("api/registeredUser").hasRole(REGISTERED_USER.name())
                                 .anyRequest()
                                 .authenticated()
                 )

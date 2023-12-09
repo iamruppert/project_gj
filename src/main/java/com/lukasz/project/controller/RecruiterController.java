@@ -1,6 +1,6 @@
 package com.lukasz.project.controller;
 
-import com.lukasz.project.database.request.OfferRequest;
+import com.lukasz.project.dto.OfferRequest;
 import com.lukasz.project.model.Offer;
 import com.lukasz.project.service.OfferServiceImpl;
 import jakarta.validation.Valid;
@@ -19,19 +19,19 @@ public class RecruiterController {
     private final OfferServiceImpl offerService;
 
     @PostMapping("/addOffer")
-    public ResponseEntity<String> createOffer(@Valid @RequestBody OfferRequest offer) {
+    public ResponseEntity<String> createOffer(@RequestBody @Valid OfferRequest offer) {
         offerService.createOffer(offer);
         return ResponseEntity.status(HttpStatus.CREATED).body("Offer created successfully");
     }
     @DeleteMapping("/deleteOffer/{id}")
     public ResponseEntity<String> deleteOffer(@PathVariable Integer id) {
         offerService.deleteOffer(id);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Offer removed successfully");
+        return ResponseEntity.status(HttpStatus.CREATED).body(String.format("Offer with id {%s} removed successfully", id));
     }
     @PostMapping("/updateOffer/{id}")
-    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody OfferRequest offerRequest) {
+    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody @Valid OfferRequest offerRequest) {
         offerService.updateOffer(id, offerRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Offer updated successfully");
+        return ResponseEntity.status(HttpStatus.CREATED).body(String.format("Offer with id {%s} updated successfully", id));
     }
     @GetMapping("/listAllOffers")
     public ResponseEntity<List<Offer>> getAllOffers() {

@@ -8,10 +8,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.nio.file.AccessDeniedException;
 
 @RestController
 @RequestMapping("/api/registeredUser")
@@ -21,29 +20,12 @@ public class RegisteredUserController {
     private final OfferServiceImpl offerService;
     private final RegisteredUserServiceImpl userService;
 
-    @PostMapping("/addToFavourite")
+    @PostMapping("/addToFavourite/{offerId}")
     public ResponseEntity<String> addOfferToFavourite(
-            @RequestBody Offer offer,
-            @AuthenticationPrincipal UserDetails userDetails) {
-        try {
-            if (userDetails != null) {
-                // Fetch the logged-in user
-                RegisteredUser user = userService.findUserByEmail(userDetails.getUsername());
-
-                // Add the offer to the user's favorite offers
-                user.getFavoriteOffers().add(offer);
-
-                // Save the updated user
-                userService.updateUser(user);
-
-                return ResponseEntity.ok("Offer added to favorites successfully");
-            } else {
-                return ResponseEntity.status(401).body("User not authenticated");
-            }
-        } catch (Exception e) {
-            e.printStackTrace(); // Log the exception for debugging
-            return ResponseEntity.status(500).body("Failed to add offer to favorites");
-        }
+            @PathVariable Integer offerId,
+            @AuthenticationPrincipal UserDetails userDetails){
+        userService.addOfferToFavourites(offerId, userDetails);
+        return ResponseEntity.ok(String.format("Offer with id {%s} added to favourites successfully", offerId));
     }
 }
 

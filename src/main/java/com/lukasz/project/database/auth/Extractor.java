@@ -1,7 +1,7 @@
 package com.lukasz.project.database.auth;
 
-import com.lukasz.project.database.request.CompanyRequest;
-import com.lukasz.project.database.request.OfferRequest;
+import com.lukasz.project.dto.CompanyRequest;
+import com.lukasz.project.dto.OfferRequest;
 import com.lukasz.project.model.*;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

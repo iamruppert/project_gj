@@ -1,6 +1,6 @@
 package com.lukasz.project.service;
 
-import com.lukasz.project.database.request.OfferRequest;
+import com.lukasz.project.dto.OfferRequest;
 import com.lukasz.project.model.Currency;
 import com.lukasz.project.model.Offer;
 import com.lukasz.project.model.Recruiter;
@@ -29,13 +29,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Testcontainers
-public class OfferServiceTest {
+public class OfferServiceIntegrationTest {
 
     @Container
-    static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:16.0")
-            .withDatabaseName("git_project")
-            .withUsername("postgres")
-            .withPassword("2c6U0XEdvJLK4XPDTEVb");
+    static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:16.0");
 
 
     @Autowired
