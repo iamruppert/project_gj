@@ -19,6 +19,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static com.lukasz.project.model.Permission.*;
 import static com.lukasz.project.model.Role.*;
@@ -42,6 +43,8 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
                         req.requestMatchers("api/auth/register")
+                                .permitAll()
+                                .requestMatchers("api/**")
                                 .permitAll()
                                 .requestMatchers("api/auth/authenticate")
                                 .permitAll()
@@ -69,7 +72,7 @@ public class SecurityConfiguration {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // Update with your React app's URL
+        corsConfig.setAllowedOrigins(List.of("http://localhost:3000")); // Update with your React app's URL
         corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
         corsConfig.setAllowCredentials(true);

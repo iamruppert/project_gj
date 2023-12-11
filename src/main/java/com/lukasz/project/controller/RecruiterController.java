@@ -33,10 +33,6 @@ public class RecruiterController {
         offerService.updateOffer(id, offerRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(String.format("Offer with id {%s} updated successfully", id));
     }
-    @GetMapping("/listAllOffers")
-    public ResponseEntity<List<Offer>> getAllOffers() {
-        List<Offer> allOffers = offerService.getAllOffers();
-        return new ResponseEntity<>(allOffers, HttpStatus.OK);
-    }
+
 
 }

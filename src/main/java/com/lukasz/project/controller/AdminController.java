@@ -5,11 +5,13 @@ import com.lukasz.project.database.auth.RegisterRequest;
 import com.lukasz.project.dto.CompanyRequest;
 import com.lukasz.project.model.Admin;
 import com.lukasz.project.model.Recruiter;
+import com.lukasz.project.model.User;
 import com.lukasz.project.service.AdminServiceImpl;
 import com.lukasz.project.service.CompanyServiceImpl;
 import com.lukasz.project.service.RecruiterServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +42,15 @@ public class AdminController {
     public ResponseEntity<List<Admin>> findAdmins() {
         List<Admin> allAdmin = adminService.findAllAdmin();
         return new ResponseEntity<>(allAdmin, HttpStatus.OK);
+    }
+
+    @GetMapping("/listAllUsers")
+    public ResponseEntity<Page<User>> getAllUsers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "4") int size) {
+
+        Page<User> allUsers = adminService.findAllUsers(page, size);
+        return new ResponseEntity<>(allUsers, HttpStatus.OK);
     }
 
     @PostMapping("/createCompany")

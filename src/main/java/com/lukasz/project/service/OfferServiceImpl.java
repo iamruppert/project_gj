@@ -11,6 +11,10 @@ import com.lukasz.project.validator.MyValidationException;
 import com.lukasz.project.validator.ObjectValidatorImpl;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -77,6 +81,24 @@ public class OfferServiceImpl implements OfferService {
     public List<Offer> getAllOffers() {
         try {
             return offerRepository.findAll();
+        } catch (Exception e) {
+            throw new RuntimeException("Error occurred while fetching offers", e);
+        }
+    }
+
+    @Override
+    public Page<Offer> getAllOffers(int page, int size, String sortBy) {
+        Sort sort;
+        if ("salary_asc".equals(sortBy)) {
+            sort = Sort.by("salary").ascending();
+        } else if ("salary_desc".equals(sortBy)) {
+            sort = Sort.by("salary").descending();
+        } else {
+            sort = Sort.by(sortBy);
+        }
+
+        try {
+            return offerRepository.findAll(PageRequest.of(page, size, sort));
         } catch (Exception e) {
             throw new RuntimeException("Error occurred while fetching offers", e);
         }

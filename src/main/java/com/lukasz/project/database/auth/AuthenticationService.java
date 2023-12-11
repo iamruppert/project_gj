@@ -21,6 +21,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import static com.lukasz.project.model.Role.*;
@@ -46,7 +48,11 @@ public class AuthenticationService {
             RegisteredUser user = extractor.createActorFromRequest(request, RegisteredUser.class);
             user.setRole(REGISTERED_USER);
             RegisteredUser save = userRepository.save(user);
-            var jwtToken = jwtService.generateToken(user);
+
+            Map<String, Object> additionalClaims = new HashMap<>();
+            additionalClaims.put("role", "REGISTERED_USER");
+
+            var jwtToken = jwtService.generateToken(additionalClaims,user);
             saveUserToken(save, jwtToken);
             return AuthenticationResponse.builder()
                     .token(jwtToken)
@@ -61,7 +67,9 @@ public class AuthenticationService {
             Admin admin = extractor.createActorFromRequest(request, Admin.class);
             admin.setRole(ADMIN);
             Admin save = userRepository.save(admin);
-            var jwtToken = jwtService.generateToken(admin);
+            Map<String, Object> additionalClaims = new HashMap<>();
+            additionalClaims.put("role", "REGISTERED_USER");
+            var jwtToken = jwtService.generateToken(additionalClaims,admin);
             saveUserToken(save, jwtToken);
             return AuthenticationResponse.builder()
                     .token(jwtToken)
@@ -80,7 +88,9 @@ public class AuthenticationService {
             Recruiter newRecruiter = extractor.createActorFromRequest(request, Recruiter.class);
             newRecruiter.setRole(RECRUITER);
             Recruiter save = userRepository.save(newRecruiter);
-            var jwtToken = jwtService.generateToken(newRecruiter);
+        Map<String, Object> additionalClaims = new HashMap<>();
+        additionalClaims.put("role", "REGISTERED_USER");
+            var jwtToken = jwtService.generateToken(additionalClaims,newRecruiter);
             saveUserToken(save, jwtToken);
             return AuthenticationResponse.builder()
                     .token(jwtToken)
@@ -95,7 +105,12 @@ public class AuthenticationService {
         );
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
+
+        // Add custom claims as needed
+        Map<String, Object> additionalClaims = new HashMap<>();
+        additionalClaims.put("role", user.getRole());
+
+        var jwtToken = jwtService.generateToken(additionalClaims,user);
         revokeAllUsersTokens(user);
         saveUserToken(user, jwtToken);
         return AuthenticationResponse.builder()
