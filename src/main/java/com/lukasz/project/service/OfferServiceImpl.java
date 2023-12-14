@@ -9,7 +9,6 @@ import com.lukasz.project.repository.OfferRepository;
 import com.lukasz.project.repository.UserRepository;
 import com.lukasz.project.validator.MyValidationException;
 import com.lukasz.project.validator.ObjectValidatorImpl;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +17,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -78,15 +76,6 @@ public class OfferServiceImpl implements OfferService {
         }
 
     @Override
-    public List<Offer> getAllOffers() {
-        try {
-            return offerRepository.findAll();
-        } catch (Exception e) {
-            throw new RuntimeException("Error occurred while fetching offers", e);
-        }
-    }
-
-    @Override
     public Page<Offer> getAllOffers(int page, int size, String sortBy) {
         Sort sort;
         if ("salary_asc".equals(sortBy)) {
@@ -119,13 +108,10 @@ public class OfferServiceImpl implements OfferService {
             Pageable pageable = PageRequest.of(page, size, sort);
 
             if (searchPhrase != null && !searchPhrase.isEmpty()) {
-                // Dzielimy ciąg na słowa i tworzymy Set<String>
                 Set<String> keywords = Set.of(searchPhrase.split(",\\s*"));
 
-                // Przekazujemy Set<String> jako pierwszy argument
                 return offerRepository.findByNameContaining(searchPhrase, pageable);
             } else {
-                // Jeśli nie ma frazy, zwróć wszystkie oferty (bez filtru)
                 return offerRepository.findAll(pageable);
             }
         } catch (Exception e) {

@@ -5,20 +5,15 @@ import com.lukasz.project.model.Admin;
 import com.lukasz.project.model.Recruiter;
 import com.lukasz.project.model.RegisteredUser;
 import com.lukasz.project.model.User;
-import com.lukasz.project.repository.AdminRepository;
-import com.lukasz.project.repository.RecruiterRepository;
-import com.lukasz.project.repository.RegisteredUserRepository;
 import com.lukasz.project.repository.UserRepository;
 import com.lukasz.project.token.Token;
 import com.lukasz.project.token.TokenRepository;
 import com.lukasz.project.token.TokenType;
 import com.lukasz.project.validator.MyValidationException;
 import com.lukasz.project.validator.ObjectValidatorImpl;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -32,10 +27,6 @@ import static com.lukasz.project.model.Role.*;
 public class AuthenticationService {
 
     private final UserRepository userRepository;
-    private final RegisteredUserRepository registeredUserRepository;
-    private final AdminRepository adminRepository;
-    private final RecruiterRepository recruiterRepository;
-    private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final Extractor extractor;
     private final JwtService jwtService;
@@ -106,7 +97,6 @@ public class AuthenticationService {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow();
 
-        // Add custom claims as needed
         Map<String, Object> additionalClaims = new HashMap<>();
         additionalClaims.put("role", user.getRole());
 

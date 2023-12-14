@@ -2,10 +2,6 @@ package com.lukasz.project.controller;
 
 import com.lukasz.project.database.auth.AuthenticationService;
 import com.lukasz.project.database.auth.RegisterRequest;
-import com.lukasz.project.service.AdminServiceImpl;
-import com.lukasz.project.service.CompanyServiceImpl;
-import com.lukasz.project.service.RecruiterServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -20,9 +16,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -40,12 +33,6 @@ class AdminControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    private AdminServiceImpl adminService;
-    @Autowired
-    private RecruiterServiceImpl recruiterService;
-    @Autowired
-    private CompanyServiceImpl companyService;
-    @Autowired
     private AuthenticationService authenticationService;
 
     @Test
@@ -53,7 +40,6 @@ class AdminControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void testFindRecruiters() throws Exception {
 
-        // Dodaj rekrutera
         RegisterRequest recruiter = RegisterRequest.builder()
                 .name("John")
                 .surname("Doe")
@@ -72,7 +58,6 @@ class AdminControllerTest {
                 .andReturn();
 
 
-        // Sprawdź odpowiedź
         String content = result.getResponse().getContentAsString();
         String expectedContent = "[{\"id\":1,\"name\":\"John\",\"surname\":\"Doe\",\"pesel\":\"12345678901\"," +
                 "\"country\":\"USA\",\"username\":\"john.doe@example.com\",\"email\":\"john.doe@example.com\"," +
@@ -100,7 +85,6 @@ class AdminControllerTest {
 
         authenticationService.registerAdmin(admin);
 
-        // Wykonaj zapytanie GET na endpoint
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/api/admin/findAdmins")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

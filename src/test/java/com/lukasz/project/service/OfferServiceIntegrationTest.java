@@ -48,7 +48,6 @@ public class OfferServiceIntegrationTest {
     @Test
     @DirtiesContext
     public void shouldCreateOfferSuccessfully() {
-        // given
         OfferRequest offerRequest = new OfferRequest();
         offerRequest.setEmail("recruiter@example.com");
         offerRequest.setName("Software Engineer");
@@ -61,10 +60,8 @@ public class OfferServiceIntegrationTest {
         recruiter.setEmail("recruiter@example.com");
         userRepository.save(recruiter);
 
-        // when
         offerService.createOffer(offerRequest);
 
-        // then
         List<Offer> offers = offerRepository.findAll();
         assertEquals(1, offers.size());
 
@@ -85,10 +82,9 @@ public class OfferServiceIntegrationTest {
         recruiter.setEmail("recruiter@example.com");
         userRepository.save(recruiter);
 
-        // when
         offerService.createOffer(offerRequest);
         offerService.deleteOffer(1);
-        // then
+
         List<Offer> offers = offerRepository.findAll();
         assertEquals(0, offers.size());
     }
@@ -96,7 +92,7 @@ public class OfferServiceIntegrationTest {
     @Test
     @DirtiesContext
     void shouldUpdateOfferSuccessfully(){
-        // given
+
         OfferRequest offerRequest = new OfferRequest();
         offerRequest.setEmail("recruiter@example.com");
         offerRequest.setName("Software Engineer");
@@ -109,7 +105,6 @@ public class OfferServiceIntegrationTest {
         recruiter.setEmail("recruiter@example.com");
         userRepository.save(recruiter);
 
-        //when
         offerService.createOffer(offerRequest);
         Optional<Offer> offerToUpdate = offerRepository.findById(1);
         if(offerToUpdate.isPresent()){

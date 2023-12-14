@@ -10,6 +10,5 @@ public interface AdminService {
 
     void createAdmin(Admin admin);
     List<Admin> findAllAdmin();
-//    List<User> findAllUsers();
     Page<User> findAllUsers(int page, int size);
 }

@@ -22,7 +22,6 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void createAdmin(Admin admin) {
-        // Dodajemy logikę sprawdzania, czy rekruter o podanym emailu już istnieje
         if (adminRepository.existsByEmail(admin.getEmail())) {
             throw new RuntimeException("Admin with this email already exists");
         }
@@ -37,7 +36,6 @@ public class AdminServiceImpl implements AdminService {
         try {
             return adminRepository.findAllAdmins();
         } catch (Exception e) {
-            // Log the exception or handle it appropriately
             throw new RuntimeException("Error occurred while fetching recruiters", e);
         }
     }
@@ -48,7 +46,6 @@ public class AdminServiceImpl implements AdminService {
         try {
             return userRepository.findAll(PageRequest.of(page, size));
         } catch (Exception e) {
-            // Log the exception or handle it appropriately
             throw new RuntimeException("Error occurred while fetching users", e);
         }
     }

@@ -15,7 +15,6 @@ public class RecruiterServiceImpl implements RecruiterService {
 
     @Override
     public void createRecruiter(Recruiter recruiter) {
-        // Dodajemy logikę sprawdzania, czy rekruter o podanym emailu już istnieje
         if (recruiterRepository.existsByEmail(recruiter.getEmail())) {
             throw new RuntimeException("Recruiter with this email already exists");
         }
@@ -28,7 +27,6 @@ public class RecruiterServiceImpl implements RecruiterService {
         try {
             return recruiterRepository.findAllRecruiters();
         } catch (Exception e) {
-            // Log the exception or handle it appropriately
             throw new RuntimeException("Error occurred while fetching recruiters", e);
         }
     }

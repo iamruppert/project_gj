@@ -4,8 +4,6 @@ import com.lukasz.project.model.Offer;
 import com.lukasz.project.service.OfferServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +24,6 @@ public class ApplicationController {
             @RequestParam(defaultValue = "4") int size,
             @RequestParam(defaultValue = "name") String sortBy) {
 
-        // Przekazanie żądania do serwisu
         Page<Offer> allOffers = offerService.getAllOffers(page, size, sortBy);
 
         return new ResponseEntity<>(allOffers, HttpStatus.OK);
@@ -39,7 +36,6 @@ public class ApplicationController {
             @RequestParam(defaultValue = "name") String sortBy,
             @RequestParam String searchPhrase) {
 
-        // Przekazanie żądania do serwisu
         Page<Offer> searchedOffers = offerService.searchOffers(page, size, sortBy, searchPhrase);
 
         return new ResponseEntity<>(searchedOffers, HttpStatus.OK);

@@ -6,7 +6,6 @@ import com.lukasz.project.model.Company;
 import com.lukasz.project.repository.CompanyRepository;
 import com.lukasz.project.validator.MyValidationException;
 import com.lukasz.project.validator.ObjectValidatorImpl;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

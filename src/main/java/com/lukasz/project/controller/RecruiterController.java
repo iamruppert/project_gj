@@ -1,15 +1,12 @@
 package com.lukasz.project.controller;
 
 import com.lukasz.project.dto.OfferRequest;
-import com.lukasz.project.model.Offer;
 import com.lukasz.project.service.OfferServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/recruiter")

@@ -4,14 +4,11 @@ import com.lukasz.project.database.auth.AuthenticationService;
 import com.lukasz.project.database.auth.RegisterRequest;
 import com.lukasz.project.dto.OfferRequest;
 import com.lukasz.project.model.Currency;
-import com.lukasz.project.model.Offer;
-import com.lukasz.project.service.OfferService;
 import com.lukasz.project.service.OfferServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.Set;
@@ -68,7 +65,6 @@ public class ProjectApplication {
 				service.registerRecruiter(recruiter);
 			}
 
-			// Create an offer using the offer request
 			OfferRequest offerRequest = new OfferRequest();
 			offerRequest.setName("Software Developer 11");
 			offerRequest.setPosition("Java Developer");
@@ -79,7 +75,6 @@ public class ProjectApplication {
 
 			offerService.createOffer(offerRequest);
 
-			// Create an offer using the offer request
 			OfferRequest offerRequest2 = new OfferRequest();
 			offerRequest2.setName("Software Developer 2");
 			offerRequest2.setPosition("Java Developer");
@@ -90,7 +85,6 @@ public class ProjectApplication {
 
 			offerService.createOffer(offerRequest2);
 
-			// Create an offer using the offer request
 			OfferRequest offerRequest3 = new OfferRequest();
 			offerRequest3.setName("Developer 3");
 			offerRequest3.setPosition("Java Developer");
@@ -102,7 +96,6 @@ public class ProjectApplication {
 			offerService.createOffer(offerRequest3);
 
 
-			// Create an offer using the offer request
 			OfferRequest offerRequest4 = new OfferRequest();
 			offerRequest4.setName("Software Developer 10");
 			offerRequest4.setPosition("Java Developer");
@@ -113,7 +106,6 @@ public class ProjectApplication {
 
 			offerService.createOffer(offerRequest4);
 
-			// Create an offer using the offer request
 			OfferRequest offerRequest5 = new OfferRequest();
 			offerRequest5.setName("Software Developer 5");
 			offerRequest5.setPosition("Java Developer");
