@@ -78,7 +78,7 @@ public class ProjectApplication {
 			offerRequest.setEmail("email1@example.com");
 
 			offerService.createOffer(offerRequest);
-			
+
 			// Create an offer using the offer request
 			OfferRequest offerRequest2 = new OfferRequest();
 			offerRequest2.setName("Software Developer 2");

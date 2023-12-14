@@ -103,4 +103,35 @@ public class OfferServiceImpl implements OfferService {
             throw new RuntimeException("Error occurred while fetching offers", e);
         }
     }
+
+    @Override
+    public Page<Offer> searchOffers(int page, int size, String sortBy, String searchPhrase) {
+        Sort sort;
+        if ("salary_asc".equals(sortBy)) {
+            sort = Sort.by("salary").ascending();
+        } else if ("salary_desc".equals(sortBy)) {
+            sort = Sort.by("salary").descending();
+        } else {
+            sort = Sort.by(sortBy);
+        }
+
+        try {
+            Pageable pageable = PageRequest.of(page, size, sort);
+
+            if (searchPhrase != null && !searchPhrase.isEmpty()) {
+                // Dzielimy ciąg na słowa i tworzymy Set<String>
+                Set<String> keywords = Set.of(searchPhrase.split(",\\s*"));
+
+                // Przekazujemy Set<String> jako pierwszy argument
+                return offerRepository.findByNameContaining(searchPhrase, pageable);
+            } else {
+                // Jeśli nie ma frazy, zwróć wszystkie oferty (bez filtru)
+                return offerRepository.findAll(pageable);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error occurred while fetching offers", e);
+        }
+    }
+
+
 }

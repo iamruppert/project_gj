@@ -19,4 +19,5 @@ public interface OfferService {
 
     Page<Offer> getAllOffers(int page, int size, String sortBy);
 
+    Page<Offer> searchOffers(int page, int size, String sortBy, String searchPhrase);
 }

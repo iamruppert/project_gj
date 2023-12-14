@@ -31,4 +31,17 @@ public class ApplicationController {
 
         return new ResponseEntity<>(allOffers, HttpStatus.OK);
     }
+
+    @GetMapping("/searchOffers")
+    public ResponseEntity<Page<Offer>> searchOffers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "4") int size,
+            @RequestParam(defaultValue = "name") String sortBy,
+            @RequestParam String searchPhrase) {
+
+        // Przekazanie żądania do serwisu
+        Page<Offer> searchedOffers = offerService.searchOffers(page, size, sortBy, searchPhrase);
+
+        return new ResponseEntity<>(searchedOffers, HttpStatus.OK);
+    }
 }
