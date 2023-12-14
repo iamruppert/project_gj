@@ -14,7 +14,7 @@ import java.util.Set;
 @DiscriminatorValue(value = "registered_user")
 public class RegisteredUser extends User {
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "favorite_offers",
             joinColumns = @JoinColumn(name = "registered_user_id"),

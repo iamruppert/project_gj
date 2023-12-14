@@ -1,27 +1,14 @@
 package com.lukasz.project.service;
 
-
+import com.lukasz.project.model.Offer;
 import com.lukasz.project.model.RegisteredUser;
-import com.lukasz.project.repository.RegisteredUserRepository;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.UserDetails;
 
-@Service
-@AllArgsConstructor
-@RequiredArgsConstructor
-public class RegisteredUserService {
+import java.nio.file.AccessDeniedException;
 
-    private RegisteredUserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+public interface RegisteredUserService {
 
-    public void updateUser(RegisteredUser user) {
-        userRepository.save(user);
-    }
+    void updateUser(RegisteredUser user);
 
-    public RegisteredUser findUserByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-    }
+    void addOfferToFavourites(Integer offerId, UserDetails userDetails);
 }

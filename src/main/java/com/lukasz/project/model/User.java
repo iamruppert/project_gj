@@ -27,7 +27,7 @@ import java.util.List;
         name = "user_type",
         discriminatorType = DiscriminatorType.STRING
 )
-@JsonIgnoreProperties({"password", "tokens","authorities","accountNonLocked","credentialsNonExpired","accountNonExpired"})
+@JsonIgnoreProperties({"password", "creationDate","tokens","authorities","accountNonLocked","credentialsNonExpired","accountNonExpired"})
 public class User implements UserDetails {
 
     @Id
@@ -66,7 +66,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Token> tokens;
 
     @Override

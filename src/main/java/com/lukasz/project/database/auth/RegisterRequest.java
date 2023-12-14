@@ -1,9 +1,6 @@
 package com.lukasz.project.database.auth;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -49,6 +46,7 @@ public class RegisterRequest {
     @NotBlank(message = "Password can't be blank")
     @NotNull(message = "Password is required")
     @NotEmpty(message = "password should not be empty")
+    @Size(min = 6, message = "Password must be at least 6 characters long")
     private String password;
 
 }

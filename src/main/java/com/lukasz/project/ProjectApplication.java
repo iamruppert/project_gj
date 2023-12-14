@@ -2,11 +2,19 @@ package com.lukasz.project;
 
 import com.lukasz.project.database.auth.AuthenticationService;
 import com.lukasz.project.database.auth.RegisterRequest;
+import com.lukasz.project.dto.OfferRequest;
+import com.lukasz.project.model.Currency;
+import com.lukasz.project.model.Offer;
+import com.lukasz.project.service.OfferService;
+import com.lukasz.project.service.OfferServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.Set;
 
 @SpringBootApplication
 @Validated
@@ -18,7 +26,8 @@ public class ProjectApplication {
 
 	@Bean
 	public CommandLineRunner commandLineRunner(
-			AuthenticationService service
+			AuthenticationService service,
+			OfferServiceImpl offerService
 	){
 		return args -> {
 			var admin = RegisterRequest.builder()
@@ -26,26 +35,97 @@ public class ProjectApplication {
 					.surname("Doe")
 					.pesel("12345678901")
 					.country("USA")
-					.email("john.email@example.com")
+					.email("john.email1111111@example.com")
 					.username("john_doe")
 					.password("password123")
 					.build();
 
-			String token = service.registerAdmin(admin).getToken();
-			System.out.println(token);
-			var admin2 = RegisterRequest.builder()
+			service.registerAdmin(admin);
+
+			var user = RegisterRequest.builder()
 					.name("John")
 					.surname("Doe")
 					.pesel("12345678901")
 					.country("USA")
-					.email("john.email2@example.com")
+					.email("john.email2222222222@example.com")
 					.username("john_doe")
 					.password("password123")
 					.build();
 
-			String token2 = service.registerAdmin(admin2).getToken();
-			System.out.println(token2);
+			service.register(user);
+
+			for (int i = 1; i <= 10; i++) {
+				RegisterRequest recruiter = RegisterRequest.builder()
+						.name("John" + i)
+						.surname("Doe" + i)
+						.pesel("1234567890" + i)
+						.country("USA")
+						.email("email" + i + "@example.com")
+						.username("john_doe" + i)
+						.password("password123")
+						.build();
+
+				service.registerRecruiter(recruiter);
+			}
+
+			// Create an offer using the offer request
+			OfferRequest offerRequest = new OfferRequest();
+			offerRequest.setName("Software Developer 11");
+			offerRequest.setPosition("Java Developer");
+			offerRequest.setKeywords(Set.of("Java, Spring, Hibernate"));
+			offerRequest.setCurrency(Currency.USD);
+			offerRequest.setSalary("9000");
+			offerRequest.setEmail("email1@example.com");
+
+			offerService.createOffer(offerRequest);
+
+			// Create an offer using the offer request
+			OfferRequest offerRequest2 = new OfferRequest();
+			offerRequest2.setName("Software Developer 2");
+			offerRequest2.setPosition("Java Developer");
+			offerRequest2.setKeywords(Set.of("Java, Spring, Hibernate"));
+			offerRequest2.setCurrency(Currency.USD);
+			offerRequest2.setSalary("8000");
+			offerRequest2.setEmail("email1@example.com");
+
+			offerService.createOffer(offerRequest2);
+
+			// Create an offer using the offer request
+			OfferRequest offerRequest3 = new OfferRequest();
+			offerRequest3.setName("Developer 3");
+			offerRequest3.setPosition("Java Developer");
+			offerRequest3.setKeywords(Set.of("Java, Spring, Hibernate"));
+			offerRequest3.setCurrency(Currency.USD);
+			offerRequest3.setSalary("7000");
+			offerRequest3.setEmail("email1@example.com");
+
+			offerService.createOffer(offerRequest3);
+
+
+			// Create an offer using the offer request
+			OfferRequest offerRequest4 = new OfferRequest();
+			offerRequest4.setName("Software Developer 10");
+			offerRequest4.setPosition("Java Developer");
+			offerRequest4.setKeywords(Set.of("Java, Spring, Hibernate"));
+			offerRequest4.setCurrency(Currency.USD);
+			offerRequest4.setSalary("8400");
+			offerRequest4.setEmail("email1@example.com");
+
+			offerService.createOffer(offerRequest4);
+
+			// Create an offer using the offer request
+			OfferRequest offerRequest5 = new OfferRequest();
+			offerRequest5.setName("Software Developer 5");
+			offerRequest5.setPosition("Java Developer");
+			offerRequest5.setKeywords(Set.of("Java, Spring, Hibernate"));
+			offerRequest5.setCurrency(Currency.USD);
+			offerRequest5.setSalary("1000");
+			offerRequest5.setEmail("email1@example.com");
+
+			offerService.createOffer(offerRequest5);
+
 		};
 	}
+
 
 }

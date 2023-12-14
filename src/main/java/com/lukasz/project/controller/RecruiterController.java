@@ -1,8 +1,8 @@
 package com.lukasz.project.controller;
 
-import com.lukasz.project.database.request.OfferRequest;
+import com.lukasz.project.dto.OfferRequest;
 import com.lukasz.project.model.Offer;
-import com.lukasz.project.service.OfferService;
+import com.lukasz.project.service.OfferServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,44 +16,23 @@ import java.util.List;
 @AllArgsConstructor
 public class RecruiterController {
 
-    private final OfferService offerService;
+    private final OfferServiceImpl offerService;
 
     @PostMapping("/addOffer")
-    public ResponseEntity<String> createOffer(@Valid @RequestBody OfferRequest offer) {
-        try{
-            offerService.createOffer(offer);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Offer created successfully");
-        }
-        catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create offer");
-        }
+    public ResponseEntity<String> createOffer(@RequestBody @Valid OfferRequest offer) {
+        offerService.createOffer(offer);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Offer created successfully");
     }
     @DeleteMapping("/deleteOffer/{id}")
     public ResponseEntity<String> deleteOffer(@PathVariable Integer id) {
-        try {
-            offerService.deleteOffer(id);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Offer removed successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to remove offer");
-        }
+        offerService.deleteOffer(id);
+        return ResponseEntity.status(HttpStatus.CREATED).body(String.format("Offer with id {%s} removed successfully", id));
     }
     @PostMapping("/updateOffer/{id}")
-    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody OfferRequest offerRequest) {
-        try {
-            offerService.updateOffer(id, offerRequest);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Offer updated successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to remove offer");
-        }
+    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody @Valid OfferRequest offerRequest) {
+        offerService.updateOffer(id, offerRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(String.format("Offer with id {%s} updated successfully", id));
     }
-    @GetMapping("/listAllOffers")
-    public ResponseEntity<List<Offer>> getAllOffers() {
-        try {
-            List<Offer> allOffers = offerService.getAllOffers();
-            return new ResponseEntity<>(allOffers, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+
 
 }

@@ -19,10 +19,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static com.lukasz.project.model.Permission.*;
-import static com.lukasz.project.model.Role.ADMIN;
-import static com.lukasz.project.model.Role.RECRUITER;
+import static com.lukasz.project.model.Role.*;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
@@ -44,12 +44,15 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(req ->
                         req.requestMatchers("api/auth/register")
                                 .permitAll()
+                                .requestMatchers("api/**")
+                                .permitAll()
                                 .requestMatchers("api/auth/authenticate")
                                 .permitAll()
                                 .requestMatchers("api/auth/register-admin").hasRole(ADMIN.name())
                                 .requestMatchers("api/auth/register-recruiter").hasRole(ADMIN.name())
                                 .requestMatchers("api/recruiter/**").hasAnyRole(ADMIN.name(), RECRUITER.name())
                                 .requestMatchers("api/admin/**").hasRole(ADMIN.name())
+                                .requestMatchers("api/registeredUser").hasRole(REGISTERED_USER.name())
                                 .anyRequest()
                                 .authenticated()
                 )
@@ -69,7 +72,7 @@ public class SecurityConfiguration {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // Update with your React app's URL
+        corsConfig.setAllowedOrigins(List.of("http://localhost:3000")); // Update with your React app's URL
         corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
         corsConfig.setAllowCredentials(true);

@@ -7,8 +7,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
-      connection:
-        isolation: 2
     show-sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
